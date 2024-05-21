@@ -4,6 +4,7 @@
 -- Disable continuations
 local opts = { noremap = true, silent = true }
 
+vim.keymap.set("i", "jk", "<ESC>")
 vim.keymap.set("n", "<Leader>o", "o<Esc>^Da", opts)
 vim.keymap.set("n", "<Leader>O", "O<Esc>^Da", opts)
 
@@ -17,10 +18,10 @@ vim.keymap.set("n", "ss", ":split<Return>", opts)
 vim.keymap.set("n", "sv", ":vsplit<Return>", opts)
 
 -- Move window
-vim.keymap.set("n", "sh", ":<C-w>h")
-vim.keymap.set("n", "sk", ":<C-w>k")
-vim.keymap.set("n", "sj", ":<C-w>j")
-vim.keymap.set("n", "se", ":<C-w>l")
+vim.keymap.set("n", "mh", ":<C-w>h")
+vim.keymap.set("n", "mk", ":<C-w>k")
+vim.keymap.set("n", "mj", ":<C-w>j")
+vim.keymap.set("n", "ml", ":<C-w>l")
 
 -- Resize window
 vim.keymap.set("n", "<C-w><left>", "<C-w><")
