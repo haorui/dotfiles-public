@@ -31,3 +31,4 @@ iterm2
 nvim.bak
 wireshark
 yarn
+/tmux/plugins*
