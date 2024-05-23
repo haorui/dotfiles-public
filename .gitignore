@@ -28,7 +28,6 @@ configstore
 containers
 github-copilot
 iterm2
-nvim.bak
 wireshark
 yarn
 /tmux/plugins*
