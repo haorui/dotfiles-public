@@ -11,17 +11,18 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme astrodark"
+    -- colorscheme = "astrodark",
     colorscheme = "catppuccin-mocha",
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
     highlights = {
       init = function()
-          local get_hlgroup = require("astroui").get_hlgroup
-          return {
-            CursorLineFold = { link = "CursorLineNr" }, -- highlight fold indicator as well as line number
-            GitSignsCurrentLineBlame = { fg = get_hlgroup("NonText").fg, italic = true }, -- italicize git blame virtual text
-            HighlightURL = { underline = true }, -- always underline URLs
-            OctoEditable = { fg = "NONE", bg = "NONE" }, -- use treesitter for octo.nvim highlighting
-          }
+        local get_hlgroup = require("astroui").get_hlgroup
+        return {
+          CursorLineFold = { link = "CursorLineNr" }, -- highlight fold indicator as well as line number
+          GitSignsCurrentLineBlame = { fg = get_hlgroup("NonText").fg, italic = true }, -- italicize git blame virtual text
+          HighlightURL = { underline = true }, -- always underline URLs
+          OctoEditable = { fg = "NONE", bg = "NONE" }, -- use treesitter for octo.nvim highlighting
+        }
       end,
     },
     -- Icons can be configured throughout the interface
