@@ -30,4 +30,4 @@ github-copilot
 iterm2
 wireshark
 yarn
-/tmux/plugins*
+/tmux/plugins/
