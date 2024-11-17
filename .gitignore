@@ -31,5 +31,6 @@ iterm2
 wireshark
 yarn
 /tmux/plugins/
+/nvim/lazy-lock.json
 karabiner
 jgit
