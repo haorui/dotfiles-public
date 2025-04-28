@@ -34,3 +34,5 @@ yarn
 /nvim/lazy-lock.json
 karabiner
 jgit
+btop
+pip

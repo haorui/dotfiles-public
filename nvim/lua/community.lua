@@ -14,4 +14,5 @@ return {
   { import = "astrocommunity.pack.tailwindcss" },
   { import = "astrocommunity.pack.vue" },
   { import = "astrocommunity.pack.svelte" },
+  { import = "astrocommunity.pack.python" },
 }
