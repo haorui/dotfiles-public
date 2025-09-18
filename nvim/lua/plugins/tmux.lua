@@ -11,7 +11,7 @@ return {
       },
       resize = {
         -- 开启使用快捷键调整 nvim 和 tmux 窗格大小
-        enable_default_keybindings = false,
+        enable_default_keybindings = true,
       },
     }
   end,
