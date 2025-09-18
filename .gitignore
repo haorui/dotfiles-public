@@ -1,0 +1,11 @@
+*
+!.gitignore
+!README.md
+!nvim/
+!nvim/**
+!tmux/
+!tmux/README.md
+!tmux/tmux.conf
+!alacritty/
+!alacritty/**
+
