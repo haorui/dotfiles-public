@@ -15,4 +15,5 @@ return {
   { import = "astrocommunity.pack.vue" },
   { import = "astrocommunity.pack.svelte" },
   { import = "astrocommunity.pack.python" },
+  { import = "astrocommunity.pack.java" },
 }

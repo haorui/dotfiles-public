@@ -4,7 +4,7 @@ TERM = "xterm-256color"
 [window]
 dimensions = { columns = 120, lines = 35 }
 decorations = "Buttonless"
-opacity = 0.93
+opacity = 0.85
 blur = false 
 dynamic_padding = true
 dynamic_title = true
