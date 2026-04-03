@@ -8,5 +8,6 @@
 !tmux/tmux.conf
 !alacritty/
 !alacritty/**
-
+**/.DS_Store
+alacritty/.DS_Store
 alacritty/themes/
