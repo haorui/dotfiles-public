@@ -1,29 +1,34 @@
--- Enable none-ls with prettierd for fast Vue/TS formatting
+-- Replace none-ls with conform.nvim for formatting
 
 ---@type LazySpec
 return {
-  "nvimtools/none-ls.nvim",
-  opts = function(_, config)
-    local null_ls = require "null-ls"
+  -- disable none-ls
+  { "nvimtools/none-ls.nvim", enabled = false },
 
-    config.sources = {
-      null_ls.builtins.formatting.prettierd.with {
-        filetypes = {
-          "vue",
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-          "json",
-          "jsonc",
-          "css",
-          "scss",
-          "html",
-          "markdown",
-          "yaml",
-        },
+  -- use conform.nvim for formatting
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    cmd = "ConformInfo",
+    opts = {
+      formatters_by_ft = {
+        vue = { "prettierd" },
+        javascript = { "prettierd" },
+        javascriptreact = { "prettierd" },
+        typescript = { "prettierd" },
+        typescriptreact = { "prettierd" },
+        json = { "prettierd" },
+        jsonc = { "prettierd" },
+        css = { "prettierd" },
+        scss = { "prettierd" },
+        html = { "prettierd" },
+        markdown = { "prettierd" },
+        yaml = { "prettierd" },
       },
-    }
-    return config
-  end,
+      format_on_save = {
+        timeout_ms = 4000,
+        lsp_fallback = true,
+      },
+    },
+  },
 }

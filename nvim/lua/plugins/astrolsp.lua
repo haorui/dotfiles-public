@@ -12,7 +12,7 @@ return {
   opts = {
     -- Configuration table of features provided by AstroLSP
     features = {
-      autoformat = true, -- enable or disable auto formatting on start
+      autoformat = false, -- disabled: conform.nvim handles format-on-save
       codelens = true, -- enable/disable codelens refresh on start
       inlay_hints = false, -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
@@ -29,7 +29,7 @@ return {
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
-        "volar", -- use none-ls/prettierd for Vue formatting
+        "volar", -- use conform.nvim/prettierd for Vue formatting
       },
       timeout_ms = 4000, -- fail fast to avoid long LSP stalls
       -- filter = function(client) -- fully override the default formatting function

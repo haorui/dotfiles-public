@@ -8,8 +8,11 @@ return {
 
   -- == Examples of Adding Plugins ==
   {
-    "Exafunction/codeium.vim",
+    "supermaven-inc/supermaven-nvim",
     event = "BufEnter",
+    config = function()
+      require("supermaven-nvim").setup {}
+    end,
   },
   -- "andweeb/presence.nvim",
   -- {

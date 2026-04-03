@@ -19,7 +19,15 @@ local function mapping(is_cmdline)
       if luasnip.jumpable(-1) then luasnip.jump(-1) end
     end, { "i", "c" }),
     ["<C-K>"] = cmp.mapping(function() cmp.select_prev_item { behavior = cmp.SelectBehavior.Select } end, { "i", "c" }),
+    ["<Up>"] = cmp.mapping(function() cmp.select_prev_item { behavior = cmp.SelectBehavior.Select } end, { "i", "c" }),
     ["<C-J>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+      else
+        cmp.complete()
+      end
+    end, { "i", "c" }),
+    ["<Down>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
       else
