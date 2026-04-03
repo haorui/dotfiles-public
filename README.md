@@ -22,7 +22,7 @@ git fetch origin && git checkout -f main
 
 | Tool | Config | Notes |
 |------|--------|-------|
-| **Neovim** | `nvim/` | AstroNvim v4+, Catppuccin theme, conform.nvim + prettierd |
+| **Neovim** | `nvim/` | AstroNvim v6, Catppuccin, blink.cmp, conform.nvim + prettierd |
 | **tmux** | `tmux/` | Prefix `Ctrl+T`, Catppuccin, tmux-nvim navigation |
 | **Alacritty** | `alacritty/` | JetBrainsMono Nerd Font, 50% opacity, dark_pride theme |
 
@@ -31,8 +31,8 @@ git fetch origin && git checkout -f main
 Installed automatically by `install.sh`:
 
 - [Homebrew](https://brew.sh)
-- neovim, tmux, alacritty
-- ripgrep, fd (telescope deps)
+- neovim (>= 0.11), tmux, alacritty
+- ripgrep, fd
 - node, prettierd (formatting)
 - lazygit
 - JetBrainsMono Nerd Font
@@ -56,3 +56,11 @@ Installed automatically by `install.sh`:
 ### Neovim
 
 Standard AstroNvim keybindings. See `:Telescope keymaps` inside nvim.
+
+## Neovim Plugins
+
+- **Framework**: [AstroNvim](https://github.com/AstroNvim/AstroNvim) v6
+- **Completion**: [blink.cmp](https://github.com/Saghen/blink.cmp) + Supermaven AI
+- **Formatting**: [conform.nvim](https://github.com/stevearc/conform.nvim) + prettierd
+- **Theme**: Catppuccin Mocha (transparent background)
+- **Language packs**: Lua, TypeScript, Vue, Svelte, Python, Java, Tailwind CSS
