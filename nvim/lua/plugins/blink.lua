@@ -3,11 +3,9 @@ return {
   {
     "saghen/blink.cmp",
     version = "1.*",
+    build = "cargo build --release",
     opts = {
       fuzzy = {
-        prebuilt_binaries = {
-          force_version = "1.3.1",
-        },
         sorts = {
           "exact",
           "score",
@@ -28,6 +26,10 @@ return {
           path = { score_offset = 3 },
           buffer = { score_offset = -3 },
         },
+      },
+      cmdline = {
+        enabled = true,
+        completion = { menu = { auto_show = true } },
       },
       completion = {
         menu = {
