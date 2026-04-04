@@ -9,6 +9,7 @@
 !tmux/tmux.conf
 !alacritty/
 !alacritty/**
+!statusline-command.sh
 **/.DS_Store
 alacritty/.DS_Store
 alacritty/themes/
