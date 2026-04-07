@@ -3,9 +3,12 @@
 #
 # Line 1: model·Style ██░░░░░░░░ ctx%/1M | branch ~N | $cost
 # Line 2: 5h X% XhXm→HH:MM | 7d X% XdXh→MM/DD
-# Line 3: D:Xk/Xk S:X/Xk | +N/-N | ~/path
+# Line 3: I:Xk O:Xk ⚡X% | +N/-N | ~/path
 
 input=$(cat)
+
+# DEBUG: uncomment to inspect raw JSON
+# echo "$input" > /tmp/statusline-debug.json
 
 # --- Raw data extraction ---
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
@@ -13,8 +16,8 @@ model_display=$(echo "$input" | jq -r '.model.display_name // ""')
 
 ctx_total=$(echo "$input"        | jq -r '.context_window.context_window_size // 0')
 ctx_used_pct=$(echo "$input"     | jq -r '.context_window.used_percentage // empty')
-input_tokens=$(echo "$input"     | jq -r '.context_window.current_usage.input_tokens // 0')
-output_tokens=$(echo "$input"    | jq -r '.context_window.current_usage.output_tokens // 0')
+input_tokens=$(echo "$input"     | jq -r '.context_window.total_input_tokens // 0')
+output_tokens=$(echo "$input"    | jq -r '.context_window.total_output_tokens // 0')
 cache_read=$(echo "$input"       | jq -r '.context_window.current_usage.cache_read_input_tokens // 0')
 cache_write=$(echo "$input"      | jq -r '.context_window.current_usage.cache_creation_input_tokens // 0')
 
@@ -24,6 +27,9 @@ seven_pct=$(echo "$input"        | jq -r '.rate_limits.seven_day.used_percentage
 seven_resets=$(echo "$input"     | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 session_cost=$(echo "$input"     | jq -r '.cost.total_cost_usd // 0')
+# cost object: session-level cumulative stats
+lines_added=$(echo "$input"      | jq -r '.cost.total_lines_added // 0')
+lines_removed=$(echo "$input"    | jq -r '.cost.total_lines_removed // 0')
 output_style=$(echo "$input"     | jq -r '.output_style.name // empty')
 
 # --- Colors (4-tier hierarchy) ---
@@ -192,33 +198,33 @@ if [ -n "$seven_pct" ]; then
   fi
 fi
 
-# --- Token segments ---
+# --- I/O token segment: session cumulative input/output tokens ---
+# Shows total token consumption split by direction (I=input, O=output)
 tok_seg=""
 if [ "$input_tokens" -gt 0 ] || [ "$output_tokens" -gt 0 ]; then
-  tok_seg=$(echo "$input_tokens $ctx_total" | awk '{
-    if($2>0) printf "D:%dk/%dk", $1/1000+0.5, $2/1000+0.5
-    else printf "D:%dk", $1/1000+0.5
+  tok_seg=$(echo "$input_tokens $output_tokens" | awk '{
+    printf "I:%dk O:%dk", $1/1000+0.5, $2/1000+0.5
   }')
 fi
 
+# --- Cache hit rate: cache_read / (cache_read + cache_create + raw_input) ---
+# High % = good prompt caching, directly reduces cost and latency
+# Below 80% suggests prompt structure issues worth investigating
 cache_seg=""
-if [ "$cache_write" -gt 0 ] || [ "$cache_read" -gt 0 ]; then
-  cw=$(echo "$cache_write" | awk '{printf "%d", $1/1000+0.5}')
-  cr=$(echo "$cache_read" | awk '{printf "%d", $1/1000+0.5}')
-  cache_seg="S:${cw}/${cr}"
-elif [ "$output_tokens" -gt 0 ]; then
-  cache_seg="S:$(echo "$output_tokens" | awk '{printf "%d", $1/1000+0.5}')"
+raw_input=$(echo "$input" | jq -r '.context_window.current_usage.input_tokens // 0')
+cache_total=$((cache_read + cache_write + raw_input))
+if [ "$cache_total" -gt 0 ]; then
+  cache_pct=$(echo "$cache_read $cache_total" | awk '{printf "%d", $1/$2*100+0.5}')
+  cache_seg="⚡${cache_pct}%"
 fi
 
-# --- Git diff stats ---
+
+# --- Session cumulative lines changed (from cost object) ---
+# Covers all changes in session including already-committed ones,
+# more complete than git diff which only shows uncommitted
 diff_seg=""
-if [ -n "$git_branch" ]; then
-  diff_stat=$(git -C "$cwd" diff --shortstat HEAD 2>/dev/null)
-  if [ -n "$diff_stat" ]; then
-    ins=$(echo "$diff_stat" | grep -o '[0-9]* insertion' | grep -o '[0-9]*')
-    del=$(echo "$diff_stat" | grep -o '[0-9]* deletion' | grep -o '[0-9]*')
-    diff_seg="+${ins:-0}/-${del:-0}"
-  fi
+if [ "$lines_added" -gt 0 ] || [ "$lines_removed" -gt 0 ]; then
+  diff_seg="+${lines_added}/-${lines_removed}"
 fi
 
 # --- Short working directory ---
@@ -263,7 +269,7 @@ if [ -n "$five_val" ] || [ -n "$seven_val" ]; then
   printf "\n"
 fi
 
-# LINE 3: ▪ tokens cache | ±N/N | ∿ path
+# LINE 3: ▪ I:Xk O:Xk ⚡X% | +N/-N | ⁂ path
 first3=1
 if [ -n "$tok_seg" ]; then
   printf "${C_TOK}▪ %s${C_RST}" "$tok_seg"
@@ -276,7 +282,7 @@ if [ -n "$cache_seg" ]; then
 fi
 if [ -n "$diff_seg" ]; then
   [ "$first3" -eq 0 ] && printf "${SEP}"
-  printf "${C_DIFF_ADD}+%s${C_RST}${C_SEP}/${C_RST}${C_DIFF_DEL}-%s${C_RST}" "${ins:-0}" "${del:-0}"
+  printf "${C_DIFF_ADD}+%s${C_RST}${C_SEP}/${C_RST}${C_DIFF_DEL}-%s${C_RST}" "$lines_added" "$lines_removed"
   first3=0
 fi
 [ "$first3" -eq 0 ] && printf "${SEP}"
