@@ -6,7 +6,19 @@ return {
     ---@type CatppuccinOptions
     opts = {
       transparent_background = true,
-      custom_highlights = {
+      custom_highlights = function(colors)
+        return {
+        -- transparent float/popup backgrounds
+        NormalFloat = { bg = "NONE" },
+        FloatBorder = { bg = "NONE" },
+        FloatTitle = { bg = "NONE" },
+        -- cursorline: underline only, no background
+        CursorLine = { bg = "NONE", underline = true, sp = colors.surface1 },
+        -- neo-tree tab bar: transparent backgrounds
+        NeoTreeTabActive = { bg = "NONE", fg = colors.lavender, bold = true },
+        NeoTreeTabInactive = { bg = "NONE", fg = colors.overlay0 },
+        NeoTreeTabSeparatorActive = { bg = "NONE", fg = colors.surface1 },
+        NeoTreeTabSeparatorInactive = { bg = "NONE", fg = colors.surface0 },
         -- disable italics  for treesitter highlights
         TabLineFill = { link = "StatusLine" },
         LspInlayHint = { style = { "italic" } },
@@ -17,7 +29,8 @@ return {
         ["@text.uri"] = { style = { "underline" } },
         ["@tag.attribute"] = { style = { "italic" } },
         ["@tag.attribute.tsx"] = { style = { "italic" } },
-      },
+        }
+      end,
       integrations = {
         aerial = true,
         alpha = true,
